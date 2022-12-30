@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
@@ -631,22 +625,95 @@ namespace WindowsFormsApp1
                 //Подключение и создание базы данных
                 mydb = new sqliteclass();
 
-                sSql = @"insert into ticket (numberticet,fam,name,otchestvo,numbermarsh,path,data,datatwo,value) 
-                values('123','Фамилия','Имя','Отчество','105','Владимир',         '" + dataTime + "','" + dataTime + "','500');";
-                sSql += @"insert into ticket (numberticet,fam,name,otchestvo,numbermarsh,path,data,datatwo,value)
-                values('124','Фамилия','Имя','Отчество','105','Москва',           '" + dataTime + "','" + dataTime + "','500');";
-                sSql += @"insert into ticket (numberticet,fam,name,otchestvo,numbermarsh,path,data,datatwo,value)
-                values('125','Фамилия','Имя','Отчество','105','Нижний новгород',  '" + dataTime + "','" + dataTime + "','500');";
-                sSql += @"insert into ticket (numberticet,fam,name,otchestvo,numbermarsh,path,data,datatwo,value)
-                values('126','Фамилия','Имя','Отчество','105','Рязань',           '" + dataTime + "','" + dataTime + "','500');";
+                sSql = @"insert into ticket (numberticet,fam,      name,  otchestvo,     numbermarsh,path,      data,             datatwo,          value) 
+                                      values('1',       'Сидиров','Илья','Владимирович','105',      'Владимир','" + dataTime + "','" + dataTime + "','50');";
+                sSql = @"insert into ticket (numberticet,fam,      name,  otchestvo,     numbermarsh,path,      data,             datatwo,          value) 
+                                      values('2',       'Иванов','Сергей','Данилович','105',      'Владимир','" + dataTime + "','" + dataTime + "','50');";
+                sSql = @"insert into ticket (numberticet,fam,      name,  otchestvo,     numbermarsh,path,      data,             datatwo,          value) 
+                                      values('3',       'Петров','Иван','Даниилович','105',      'Владимир','" + dataTime + "','" + dataTime + "','50');";
+                sSql = @"insert into ticket (numberticet,fam,      name,  otchestvo,     numbermarsh,path,      data,             datatwo,          value) 
+                                      values('4',       'Колин','Николай','Данилавич','105',      'Владимир','" + dataTime + "','" + dataTime + "','50');";
+                sSql = @"insert into ticket (numberticet,fam,      name,  otchestvo,     numbermarsh,path,      data,             datatwo,          value) 
+                                      values('5',       'Васин','Андрей','Сергеевич','105',      'Владимир','" + dataTime + "','" + dataTime + "','50');";
 
-                sSql += @"insert into bus    (busnumber,bustype,places) values('А999АА','ЗиЛ','35');";
+                sSql += @"insert into ticket (numberticet,fam,name,otchestvo,numbermarsh,path,data,datatwo,value)
+                values('124','Петров','Андрей','Владимирович','102','Москва',           '" + dataTime + "','" + dataTime + "','100');";
+                sSql += @"insert into ticket (numberticet,fam,name,otchestvo,numbermarsh,path,data,datatwo,value)
+                values('125','Петров','Андрей','Владимирович','103','Нижний новгород',  '" + dataTime + "','" + dataTime + "','100');";
+                sSql += @"insert into ticket (numberticet,fam,name,otchestvo,numbermarsh,path,data,datatwo,value)
+                values('126','Петров','Андрей','Владимирович','104','Рязань',           '" + dataTime + "','" + dataTime + "','0');";
+
+                sSql += @"insert into bus    (busnumber,bustype,places) values('А929АА12','ЗиЛ','35');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('Б999АА23','ГАз','40');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('В959АА43','Заз','15');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('Г999АА45','ЗиЛ','35');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('Я909АА65','ЗиЛ','35');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('Ч929АА65','ГАз','40');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('С969АА85','ЗиЛ','35');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('М919АА43','ГАз','40');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('И959АА45','ЗиЛ','35');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('Ф939АА54','Заз','15');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('В999АА34','ГАз','40');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('А919АА64','Заз','15');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('Й989АА34','ЗиЛ','35');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('Ц979АА43','ГАз','40');";
+                sSql += @"insert into bus    (busnumber,bustype,places) values('У969АА34','ГАз','40');";
+
                 sSql += @"insert into driver (fam,name,otchestvo,yearofbird,phonenumber,medecinecard) 
-                values('Фамилия','Имя','Отчество','2001','88009601850','999666');";
-                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('105','Муром','Рязань','90');";
-                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Москва','Алея','50');";
+                values('Ляшин','Николай','Владимирович','1996','88009601850','999661');";
+                sSql += @"insert into driver (fam,name,otchestvo,yearofbird,phonenumber,medecinecard) 
+                values('Вашин','Илья','Владимирович','1990','88002341850','999662');";
+                sSql += @"insert into driver (fam,name,otchestvo,yearofbird,phonenumber,medecinecard) 
+                values('Нашин','Николай','Владиславович','1991','88054301850','999663');";
+                sSql += @"insert into driver (fam,name,otchestvo,yearofbird,phonenumber,medecinecard) 
+                values('Ишин','Андрей','Сергеевич','1992','88007581850','999664');";
+                sSql += @"insert into driver (fam,name,otchestvo,yearofbird,phonenumber,medecinecard) 
+                values('Вишин','Илья','Владиславович','1994','88009561850','999665');";
+                sSql += @"insert into driver (fam,name,otchestvo,yearofbird,phonenumber,medecinecard) 
+                values('Уишин','Николай','Сергеевич','1995','80009601850','999666');";
+                sSql += @"insert into driver (fam,name,otchestvo,yearofbird,phonenumber,medecinecard) 
+                values('Мишин','Андрей','Владимирович','1997','88078601850','999667');";
+                sSql += @"insert into driver (fam,name,otchestvo,yearofbird,phonenumber,medecinecard) 
+                values('Фишин','Илья','Сергеевич','1990','88009603350','999668');";
+
+
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('105','Муром','Москва','300');";
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('104','Муром','Рязань','90');";
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('103','Муром','Рязань','90');";
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('102','Муром','Рязань','90');";
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('101','Муром','Рязань','90');";
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('100','Муром','Москва','300');";
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('109','Муром','Москва','300');";
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('110','Муром','Рязань','90');";
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('155','Муром','Рязань','90');";
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('165','Муром','Москва','300');";
+                sSql += @"insert into path   (pathnumber,pathfrom,pathto,pathtime) values('145','Муром','Рязань','90');";
+
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Рязань','Алея','50');";
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Рязань','Валея','60');";
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Рязань','Салея','70');";
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Рязань','Налея','80');";
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Рязань','Фалея','90');";
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Рязань','Зеля','100');";
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Москва','Ачин','500');";
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Москва','Вачин','550');";
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Москва','Гачин','650');";
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Москва','Мачин','750');";
+                sSql += @"insert into stops  (stopfrom,stopto,stopname,price) values('Муром','Москва','Лячин','850');";
+
                 sSql += @"insert into trip   (busnumber,pathfrom,pathto,busplaces,driveridfirst,driveridsecond) 
-                values('А228УЕ','Муром','Рязань','35','1','2');";
+                values('101','Муром','Рязань','35','1','2');";
+                sSql += @"insert into trip   (busnumber,pathfrom,pathto,busplaces,driveridfirst,driveridsecond) 
+                values('102','Муром','Рязань','35','4','5');";
+                sSql += @"insert into trip   (busnumber,pathfrom,pathto,busplaces,driveridfirst,driveridsecond) 
+                values('103','Муром','Рязань','35','6','3');";
+                sSql += @"insert into trip   (busnumber,pathfrom,pathto,busplaces,driveridfirst,driveridsecond) 
+                values('104','Муром','Рязань','35','7','8');";
+
+                sSql += @"create trigger delte_trip_driver after delete on driver begin delete from trip where driveridfirst = old.id; end;";
+                sSql += @"create trigger delte_trip_path after delete on path begin delete from trip where busnumber = old.pathnumber; end;";
+                sSql += @"create trigger delte_trip_bus after delete on bus begin delete from trip where busplaces = old.places; end;";
+                sSql += @"create trigger delte_ticket after insert on ticket begin delete from ticket  where value = 0; end;";
 
                 if (mydb.iExecuteNonQuery(db_connect.path, sSql, 1) == 0)
                 {

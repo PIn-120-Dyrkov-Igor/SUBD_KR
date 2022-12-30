@@ -10,16 +10,34 @@ namespace WindowsFormsApp1
         private sqliteclass mydb = null;        //Класс
         private string sSql = string.Empty;     //Запрос
         public int thisTab = Form3.selectedTab; //Номер выбранной вкладки
+        string path = "";
 
         public Form4()
         {
             InitializeComponent();
+            switch (thisTab)
+            {
+                case 0:
+                    path = "Владимир";
+                    break;
+                case 1:
+                    path = "Москва";
+                    break;
+                case 2:
+                    path = "Нижний новгород";
+                    break;
+                case 3:
+                    path = "Рязань";
+                    break;
+            }
             numericUpDown1.Minimum = 1;
             dateTimePicker1.MinDate = DateTime.Today;
             textBox4.MaxLength = 6;         //Номер паспорта
             textBox5.MaxLength = 4;         //Год рождения
             Text = Form3.operName;
             button1.Text = Form3.operName;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;   //Запрет на ввод текста в комбоБокс1
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;   //Запрет на ввод текста в комбоБокс2
             KeyPreview = true;              
             //Запуск события нажатой кнопки при нажатии Enter
             KeyDown += (s, e) => { if (e.KeyValue == (char)Keys.Enter) button1_Click(button1, null); };
@@ -45,15 +63,69 @@ namespace WindowsFormsApp1
                     dateTimePicker1.Value = DateTime.ParseExact(sqlReader.GetValue(5).ToString(), "dd.MM.yyyy",CultureInfo.InvariantCulture);
                 }
 
-                conn.Close();            
+                conn.Close();
+
+                string firstText = "select pathnumber from path where pathto = '" + path + "';";
+                SQLiteCommand cmd1 = new SQLiteCommand(firstText, conn);
+                conn.Open();
+
+                SQLiteDataReader sqlReader1 = cmd1.ExecuteReader();
+
+                while (sqlReader1.Read())
+                {
+                    comboBox2.Items.Add(sqlReader1.GetValue(0).ToString());
+                }
+
+                conn.Close();
+
+                string secondText = "select stopname from stops where stopto = '" + path + "';";
+                SQLiteCommand cmd2 = new SQLiteCommand(secondText, conn);
+
+                conn.Open();
+                SQLiteDataReader sqlReader2 = cmd2.ExecuteReader();
+
+                while (sqlReader2.Read())
+                {
+                    comboBox1.Items.Add(sqlReader2.GetValue(0).ToString());
+                }
+
+                conn.Close();
             }
+            else
+            {
+                string commandText = "select pathnumber from path where pathto = '" + path + "';";
+                SQLiteConnection conn = new SQLiteConnection(@"Data Source=" + db_connect.path + ";New=True;Version=3");
+                SQLiteCommand cmd = new SQLiteCommand(commandText, conn);
+                conn.Open();
+
+                SQLiteDataReader sqlReader = cmd.ExecuteReader();
+
+                while (sqlReader.Read())
+                {
+                    comboBox2.Items.Add(sqlReader.GetValue(0).ToString());                                                 
+                }
+
+                conn.Close();
+
+                string secondText = "select stopname from stops where stopto = '" + path + "';";
+                SQLiteCommand cmd2 = new SQLiteCommand(secondText, conn);
+
+                conn.Open();
+                SQLiteDataReader sqlReader2 = cmd2.ExecuteReader();
+
+                while (sqlReader2.Read())
+                {
+                    comboBox1.Items.Add(sqlReader2.GetValue(0).ToString());
+                }
+
+                conn.Close();
+            }
+            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-                string path = "";
-
                 int maxTicket;
                 string commandText = "select max(numberticet) from ticket";//Выбор максимума 
                 SQLiteConnection conn = new SQLiteConnection(@"Data Source=" + db_connect.path + ";New=True;Version=3");
@@ -68,25 +140,9 @@ namespace WindowsFormsApp1
             {
                 maxTicket = 1;
             }
-
-            
+         
                 conn.Close();
 
-                switch (thisTab)
-                {
-                    case 0:
-                        path = "Владимир";
-                        break;
-                    case 1:
-                        path = "Москва";
-                        break;
-                    case 2:
-                        path = "Нижний новгород";
-                        break;
-                    case 3:
-                        path = "Рязань";
-                        break;
-                }
 
                 if (textBox1.Text == "" || textBox2.Text == "" || textBox3.Text == "" || textBox4.Text == "" || textBox5.Text == "")
                 {
@@ -96,12 +152,30 @@ namespace WindowsFormsApp1
                 {
                     if(Text != "Изменить")
                     {
-                        DateTime now = DateTime.Now;
+                    int price = 0;
+                    string commandText1 = "select price from stops where stopname = '" + comboBox1.Text + "';";
+                    SQLiteConnection conn1 = new SQLiteConnection(@"Data Source=" + db_connect.path + ";New=True;Version=3");
+                    SQLiteCommand cmd1 = new SQLiteCommand(commandText1, conn1);
+                    conn1.Open();
+
+                    SQLiteDataReader sqlReader = cmd1.ExecuteReader();
+
+                    while (sqlReader.Read())
+                    {
+                        price = Convert.ToInt32(sqlReader.GetValue(0).ToString());
+                    }
+
+                    conn1.Close();
+
+                    price = price * Convert.ToInt32(numericUpDown1.Value);
+
+                    DateTime now = DateTime.Now;
                         string dataTime = now.ToString("dd.MM.yyyy");
                         mydb = new sqliteclass();
-                        sSql = @"insert into ticket (numberticet,fam,name,otchestvo,numbermarsh,path,data,datatwo,value,yearofbird,passport) 
-                        values('" + maxTicket + "','" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "','105','" + path + "'," +
-                        "'" + dataTime + "','" + dateTimePicker1.Value.ToString("dd.MM.yyyy") + "','500','" + textBox5.Text + "','" + textBox4.Text + "');";       
+                        sSql = @"insert into ticket (numberticet,fam,name,otchestvo,numbermarsh,path,data,datatwo,value,yearofbird,passport,stoppoint,tickcount) 
+                        values('" + maxTicket + "','" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "','" + Convert.ToInt32(comboBox2.SelectedItem) + "','" + path + "'," +
+                        "'" + dataTime + "','" + dateTimePicker1.Value.ToString("dd.MM.yyyy") + "','" + price + "','" + textBox5.Text + "','" + textBox4.Text + "'," +
+                        "'" + Convert.ToString(comboBox2.SelectedItem) + "','" + Convert.ToInt32(numericUpDown1.Value) + "');";       
                     
                         mydb.iExecuteNonQuery(db_connect.path, sSql, 0);
                         mydb = null;
@@ -110,10 +184,29 @@ namespace WindowsFormsApp1
                     }
                     else
                     {
-                        mydb = new sqliteclass();
-                        sSql = @"update ticket set (fam,name,otchestvo,datatwo,value,yearofbird,passport) = 
-                        ('" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "','" + dateTimePicker1.Value.ToString("dd.MM.yyyy") + "'," +
-                        "'500','" + textBox5.Text + "','" + textBox4.Text + "') where numberticet = '" + Form3.transit.ToString() + "';";
+                    int price = 0;
+                    string commandText1 = "select price from stops where stopname = '" + comboBox1.Text + "';";
+                    SQLiteConnection conn1 = new SQLiteConnection(@"Data Source=" + db_connect.path + ";New=True;Version=3");
+                    SQLiteCommand cmd1 = new SQLiteCommand(commandText1, conn1);
+                    conn1.Open();
+
+                    SQLiteDataReader sqlReader = cmd1.ExecuteReader();
+
+                    while (sqlReader.Read())
+                    {
+                        price = Convert.ToInt32(sqlReader.GetValue(0).ToString());
+                    }
+
+                    conn1.Close();
+
+                    price = price * Convert.ToInt32(numericUpDown1.Value);
+
+                    mydb = new sqliteclass();
+                        sSql = @"update ticket set (fam,name,otchestvo,numbermarsh,path,datatwo,value,yearofbird,passport,stoppoint,tickcount) = 
+                        ('" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "','" + Convert.ToInt32(comboBox2.SelectedItem) + "','" + path + "'," +
+                        "'" + dateTimePicker1.Value.ToString("dd.MM.yyyy") + "','" + price + "','" + textBox5.Text + "','" + textBox4.Text + "'," +
+                        "'" + Convert.ToString(comboBox2.SelectedItem) + "','" + Convert.ToInt32(numericUpDown1.Value) + "') " +
+                        "where numberticet = '" + Form3.transit.ToString() + "';";
                         
                         mydb.iExecuteNonQuery(db_connect.path, sSql, 0);
                         mydb = null;

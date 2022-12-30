@@ -105,22 +105,24 @@ namespace WindowsFormsApp1
 
         private void button5_Click(object sender, EventArgs e)
         {
+            DateTime now = DateTime.Now;
+            string dataTime = now.ToString("dd.MM.yyyy");
             if (Text != "Изменить")
             {
                 mydb = new sqliteclass();
                 if (textBox7.Text == "")
                 {
-                    sSql = @"insert into trip (busnumber,pathfrom,pathto,busplaces,driveridfirst,freeplaces) 
+                    sSql = @"insert into trip (busnumber,pathfrom,pathto,busplaces,driveridfirst,freeplaces,datatrip) 
             values('" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "'," +
                 "'" + Convert.ToInt32(textBox5.Text) + "','" + Convert.ToInt32(textBox6.Text) + "'," +
-                "'" + Convert.ToInt32(textBox5.Text) + "');";
+                "'" + Convert.ToInt32(textBox5.Text) + "','" + dataTime + "');";
                 }
                 else
                 {
-                    sSql = @"insert into trip (busnumber,pathfrom,pathto,busplaces,driveridfirst,driveridsecond,freeplaces) 
+                    sSql = @"insert into trip (busnumber,pathfrom,pathto,busplaces,driveridfirst,driveridsecond,freeplaces,datatrip) 
             values('" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "'," +
                 "'" + Convert.ToInt32(textBox5.Text) + "','" + Convert.ToInt32(textBox6.Text) + "'," +
-                "'" + Convert.ToInt32(textBox6.Text) + "','" + Convert.ToInt32(textBox5.Text) + "');";
+                "'" + Convert.ToInt32(textBox6.Text) + "','" + Convert.ToInt32(textBox5.Text) + "','" + Convert.ToInt32(textBox6.Text) + "');";
                 }
 
                 mydb.iExecuteNonQuery(db_connect.path, sSql, 0);
@@ -132,17 +134,17 @@ namespace WindowsFormsApp1
                 mydb = new sqliteclass();
                 if (textBox7.Text == "")
                 {
-                    sSql = @"update trip set (busnumber,pathfrom,pathto,busplaces,driveridfirst,freeplaces) =
+                    sSql = @"update trip set (busnumber,pathfrom,pathto,busplaces,driveridfirst,freeplaces,datatrip) =
                 ('" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "'," +
                 "'" + Convert.ToInt32(textBox5.Text) + "','" + Convert.ToInt32(textBox6.Text) + "'," +
-                "'" + Convert.ToInt32(textBox5.Text) + "') where id = '" + Form2.transit + "';";
+                "'" + Convert.ToInt32(textBox5.Text) + "','" + Convert.ToInt32(textBox6.Text) + "') where id = '" + Form2.transit + "';";
                 }
                 else
                 {
-                    sSql = @"update trip set (busnumber,pathfrom,pathto,busplaces,driveridfirst,driveridsecond,freeplaces) =
+                    sSql = @"update trip set (busnumber,pathfrom,pathto,busplaces,driveridfirst,driveridsecond,freeplaces,datatrip) =
                 ('" + textBox1.Text + "','" + textBox2.Text + "','" + textBox3.Text + "'," +
                 "'" + Convert.ToInt32(textBox5.Text) + "','" + Convert.ToInt32(textBox6.Text) + "'," +
-                "'" + Convert.ToInt32(textBox6.Text) + "','" + Convert.ToInt32(textBox5.Text) + "') where id = '" + Form2.transit + "';";
+                "'" + Convert.ToInt32(textBox6.Text) + "','" + Convert.ToInt32(textBox5.Text) + "','" + Convert.ToInt32(textBox6.Text) + "') where id = '" + Form2.transit + "';";
                 }
 
                 mydb.iExecuteNonQuery(db_connect.path, sSql, 0);

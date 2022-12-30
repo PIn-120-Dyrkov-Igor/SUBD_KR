@@ -46,7 +46,7 @@ namespace WindowsFormsApp1
             }
             return n;
         }
-        public DataRow[] drExecute(string FileData, string sSql)
+        /*public DataRow[] drExecute(string FileData, string sSql)
         {
             DataRow[] datarows = null;
             SQLiteDataAdapter dataadapter = null;
@@ -74,6 +74,6 @@ namespace WindowsFormsApp1
                 datarows = null;
             }
             return datarows;
-        }
+        }*/
     }
 }
